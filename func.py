@@ -44,8 +44,7 @@ def data_stats(db, group_feat, agg_feature, func): # recupero le professioni e l
         lbl_arr = np.array(labels, dtype="<U50").reshape(-1, 1)
         val_arr = np.array(values, dtype="float").reshape(-1, 1)
         return np.hstack((lbl_arr, val_arr)) # unisco le due liste in un array 2D
-    
-        
+
     except Exception as e:
         print(f"Error: {e}")
         print("Error: Unable to fetch data")
@@ -71,7 +70,6 @@ def data_var(db, group_feat, agg_feat="QualitySleep"): # recupero le professioni
 def data_median(db, group_feat, agg_feat="QualitySleep"):
     conn = connect(db)
     cursor = conn.cursor()
-    
     try:
         query = f"SELECT {group_feat}, {agg_feat} FROM sleepdata"
         cursor.execute(query)
@@ -93,7 +91,59 @@ def data_median(db, group_feat, agg_feat="QualitySleep"):
     finally:
         cursor.close()
         conn.close()
-            
 
+#print(data_median("csv_db 10", "Occupation", "QualitySleep"))
 
-print(data_median("csv_db 10", "Occupation", "QualitySleep"))
+def main_menu():
+    import sys
+    
+    db = "sleepdata"
+    group_feat = input("Inserisci il nome della feature da raggruppare (es: Occupation): ")
+    agg_feat = "QualitySleep"  
+
+    while True:
+        print("\n--- Menu ---")
+        print("1. Mostra valori distinti della feature")
+        print("2. Calcola media")
+        print("3. Calcola deviazione standard")
+        print("4. Calcola varianza")
+        print("5. Calcola mediana")
+        print("0. Esci")
+
+        choice = input("Scegli un'opzione: ")
+
+        match choice:
+            case "1":
+                arr = data(db, group_feat)
+                print("\nValori distinti:")
+                print(arr)
+
+            case "2":
+                arr = data_mean(db, group_feat, agg_feat)
+                print("\nMedia della feature aggregata:")
+                print(arr)
+
+            case "3":
+                arr = data_std(db, group_feat, agg_feat)
+                print("\nDeviazione standard della feature aggregata:")
+                print(arr)
+
+            case "4":
+                arr = data_var(db, group_feat, agg_feat)
+                print("\nVarianza della feature aggregata:")
+                print(arr)
+
+            case "5":
+                arr = data_median(db, group_feat, agg_feat)
+                print("\nMediana della feature aggregata:")
+                print(arr)
+
+            case "0":
+                print("Uscita dal programma.")
+                sys.exit()
+
+            case _:
+                print("Scelta non valida. Riprova.")
+
+if __name__ == "__main__":
+    main_menu()

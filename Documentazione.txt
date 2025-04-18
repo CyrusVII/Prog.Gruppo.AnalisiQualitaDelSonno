@@ -1,0 +1,134 @@
+DOCUMENTAZIONE DEL PROGETTO: SleepData Analyzer
+🔧 Descrizione del progetto
+Il progetto SleepData Analyzer è uno strumento in Python che permette l'analisi statistica dei dati relativi al sonno contenuti in un database MySQL.
+È pensato per calcolare misure come media, deviazione standard, varianza e mediana di una determinata variabile, raggruppata per categoria (ad esempio: professione, sesso, età, ecc.).
+
+👥 Team di sviluppo
+Sviluppato con cura e dedizione da:
+
+Ciro
+
+Alessandra
+
+Marco
+
+🏗️ Struttura del codice
+connect(db)
+Connette al database MySQL locale.
+
+Parametri:
+
+db (str): Nome del database.
+
+Restituisce:
+
+Connessione MySQL attiva (mysql.connector).
+
+data(db, feature)
+Estrae i valori unici di una feature da una tabella chiamata sleepdata.
+
+Parametri:
+
+db (str): Nome del database.
+
+feature (str): Colonna da analizzare (es. "Occupation").
+
+Restituisce:
+
+np.ndarray: Array 2D di stringhe con valori unici.
+
+data_stats(db, group_feat, agg_feature, func)
+Esegue aggregazioni SQL come AVG, STD, VARIANCE raggruppando i dati.
+
+Parametri:
+
+group_feat (str): Feature categoriale per raggruppamento.
+
+agg_feature (str): Feature numerica da aggregare.
+
+func (str): Funzione SQL di aggregazione (es. "AVG").
+
+Restituisce:
+
+np.ndarray: Array 2D con risultati aggregati.
+
+Funzioni derivate da data_stats:
+
+Funzione	Descrizione
+data_mean	Calcola la media
+data_std	Calcola la deviazione standard
+data_var	Calcola la varianza (usando SQL VARIANCE)
+data_median(db, group_feat, agg_feat="QualitySleep")
+Calcola la mediana per ogni gruppo, usando NumPy.
+
+Parametri:
+
+group_feat (str): Feature categoriale.
+
+agg_feat (str): Feature numerica da aggregare.
+
+Restituisce:
+
+np.ndarray: Array 2D con le mediane per ciascun gruppo.
+
+main_menu()
+Fornisce una interfaccia a menu da terminale, basata su match-case.
+
+Chiede all’utente la feature da raggruppare (es. "Occupation").
+
+Mostra un menu di opzioni:
+
+Valori distinti
+
+Media
+
+Deviazione standard
+
+Varianza
+
+Mediana
+
+Uscita
+
+📦 Requisiti
+Python 3.10 o superiore
+
+Database MySQL
+
+Librerie necessarie:
+
+bash
+Copia
+Modifica
+pip install numpy mysql-connector-python
+🧪 Esempio di utilizzo
+bash
+Copia
+Modifica
+$ python sleep_analyzer.py
+Inserisci il nome della feature da raggruppare (es: Occupation): Occupation
+
+--- Menu ---
+1. Mostra valori distinti della feature
+2. Calcola media
+3. Calcola deviazione standard
+4. Calcola varianza
+5. Calcola mediana
+0. Esci
+💡 Suggerimenti
+Assicurati che il database contenga una tabella chiamata sleepdata con almeno due colonne:
+
+Una categoriale (Occupation, Gender, ecc.)
+
+Una numerica (QualitySleep, HoursSleep, ecc.)
+
+Il costrutto match-case funziona solo su Python ≥ 3.10
+
+📁 Struttura consigliata della repo
+Copia
+Modifica
+sleepdata-analyzer/
+├── sleep_analyzer.py
+├── README.md
+├── DOCUMENTAZIONE.md
+├── requirements.txt
